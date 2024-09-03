@@ -9,7 +9,8 @@ export default async function Page({
   };
 }) {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_SERVER_URL + `/book/search?q=${searchParams.q}`
+    process.env.NEXT_PUBLIC_API_SERVER_URL + `/book/search?q=${searchParams.q}`,
+    { cache: 'force-cache' }
   );
 
   if (!response.ok) return <div>찾을 수 없습니다...</div>;
