@@ -1,13 +1,14 @@
 import { BookData } from '@/types';
 import style from './page.module.css';
 import { notFound } from 'next/navigation';
+import createReviewAction from '@/actions/create-review.action';
 
 // export const dynamicParams = false;
 export const generateStaticParams = () => {
   return [{ id: '1' }, { id: '2' }];
 };
 
-async function BookDetail({ bookId }: { bookId: String }) {
+async function BookDetail({ bookId }: { bookId: string }) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${bookId}`
   );
@@ -40,20 +41,22 @@ async function BookDetail({ bookId }: { bookId: String }) {
   );
 }
 
-function ReviewEditor() {
-  async function createReviewAction(formData: FormData) {
-    'use server';
-    const content = formData.get('content');
-    const author = formData.get('author')?.toString();
-  }
+function ReviewEditor({ bookId }: { bookId: string }) {
   return (
     <section>
       <form action={createReviewAction}>
         <input
+          name='bookId'
+          value={bookId}
+          hidden
+        />
+        <input
+          required
           name='content'
           placeholder='리뷰 내용'
         />
         <input
+          required
           name='author'
           placeholder='작성자'
         />
@@ -67,7 +70,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <div className={style.container}>
       <BookDetail bookId={params.id} />
-      <ReviewEditor />
+      <ReviewEditor bookId={params.id} />
     </div>
   );
 }
