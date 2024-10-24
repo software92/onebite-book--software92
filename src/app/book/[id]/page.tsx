@@ -45,6 +45,8 @@ async function BookDetail({ bookId }: { bookId: string }) {
 async function ReviewList({ bookId }: { bookId: string }) {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_SERVER_URL + `/review/book/${bookId}`
+    // 태그를 사용해 캐시 초기화 및 재검증
+    // { next: { tags: [`review-${bookId}`] } }
   );
 
   // 에러 핸들링(error.tsx)으로 에러 처리하기 때문에 해당 조건문에서는 에러만 던져줌
