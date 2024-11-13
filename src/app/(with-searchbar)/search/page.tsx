@@ -1,6 +1,7 @@
 import BookItem from '@/components/book-item';
 import { BookData } from '@/types';
 import { delay } from '@/util/delay';
+import { Metadata } from 'next';
 import { Suspense } from 'react';
 
 // export const dynamic = 'error';
@@ -28,19 +29,42 @@ async function SearchResult({ q }: { q: string }) {
   );
 }
 
-export default function Page({
+// 동적인 값으로 메타데이터 설정(검색과 같은 페이지)
+export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     q?: string;
-  };
+  }>;
 }) {
+  const { q } = await searchParams;
+
+  return {
+    title: `${q}: onebite books`,
+    description: `${q}의 검색 결과입니다`,
+    openGraph: {
+      title: `${q}: onebite books`,
+      description: `${q}의 검색 결과입니다`,
+      images: ['/thumbnail.png'],
+    },
+  };
+}
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    q?: string;
+  }>;
+}) {
+  const { q } = await searchParams;
+
   return (
     <Suspense
-      key={searchParams.q || ''}
+      key={q || ''}
       fallback={<div>Loading...</div>}
     >
-      <SearchResult q={searchParams.q || ''} />
+      <SearchResult q={q || ''} />
     </Suspense>
   );
 }

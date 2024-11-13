@@ -75,6 +75,32 @@ async function ReviewList({ bookId }: { bookId: string }) {
   );
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  // request memozation
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${id}`
+  );
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const book: BookData = await response.json();
+  return {
+    title: `${book.title}: onebite books`,
+    description: `${book.description}`,
+    openGraph: {
+      title: `${book.title}: onebite books`,
+      description: `${book.description}`,
+      images: [book.coverImgUrl],
+    },
+  };
+}
 export default async function Page({ params }: { params: { id: string } }) {
   return (
     <div className={style.container}>

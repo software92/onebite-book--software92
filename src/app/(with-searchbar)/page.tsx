@@ -4,6 +4,7 @@ import { BookData } from '@/types';
 import { Suspense } from 'react';
 import { delay } from '@/util/delay';
 import BookListSkelton from '@/components/skelton/book-list-skelton';
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,6 +41,18 @@ const RecoBooks = async () => {
       {...book}
     />
   ));
+};
+
+// 해당 페이지의 메타 데이터로 설정된다
+export const metadata: Metadata = {
+  title: 'onebite books',
+  description: 'onebite books의 등록된 도서를 만나보세요',
+  openGraph: {
+    title: 'onebite books',
+    description: 'onebite books의 등록된 도서를 만나보세요',
+    // 이미지 파일을 입력할 경우 /public 디렉터리에서 찾는다
+    images: ['/thumbnail.png'],
+  },
 };
 // 코드 가독성을 위해 fetching data에 따라 컴포넌트 분리
 export default function Home() {
