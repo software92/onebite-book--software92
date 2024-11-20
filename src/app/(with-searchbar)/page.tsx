@@ -1,15 +1,13 @@
 import BookItem from '@/components/book-item';
 import style from './page.module.css';
 import { BookData } from '@/types';
-import { Suspense } from 'react';
-import { delay } from '@/util/delay';
-import BookListSkelton from '@/components/skelton/book-list-skelton';
+// import { Suspense } from 'react';
+// import BookListSkelton from '@/components/skelton/book-list-skelton';
 import { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 const AllBooks = async () => {
-  await delay(3000);
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_SERVER_URL + `/book`,
     // { cache: 'no-store' }
@@ -26,7 +24,6 @@ const AllBooks = async () => {
   ));
 };
 const RecoBooks = async () => {
-  await delay(1500);
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_SERVER_URL + `/book/random`,
     // { cache: 'force-cache' }
@@ -60,15 +57,15 @@ export default function Home() {
     <div className={style.container}>
       <section>
         <h3>등록된 모든 도서</h3>
-        <Suspense fallback={<BookListSkelton cnt={3} />}>
-          <RecoBooks />
-        </Suspense>
+        {/* <Suspense fallback={<BookListSkelton cnt={3} />}> */}
+        <RecoBooks />
+        {/* </Suspense> */}
       </section>
       <section>
         <h3>지금 추천하는 도서</h3>
-        <Suspense fallback={<BookListSkelton cnt={10} />}>
-          <AllBooks />
-        </Suspense>
+        {/* <Suspense fallback={<BookListSkelton cnt={10} />}> */}
+        <AllBooks />
+        {/* </Suspense> */}
       </section>
     </div>
   );
